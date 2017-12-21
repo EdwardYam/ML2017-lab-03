@@ -32,6 +32,7 @@ class AdaBoostClassifier:
         weight = 1 / X.shape[0] * np.ones((1, X.shape[0]))
         clf_list = []
         a_list = []
+        error_list = []
         for i in range(0, self.n_weakers_limit):
             #clf = self.weak_classifier(random_state=0)
             clf = self.weak_classifier(max_depth=2)
@@ -41,7 +42,7 @@ class AdaBoostClassifier:
             y_ = clf.predict(X)
 
             error_rate = np.sum(weight * (y_!= y))
-
+            error_list.append(error_rate)
             if(error_rate > 0.5):
                 break
 
@@ -52,6 +53,7 @@ class AdaBoostClassifier:
 
         a_list = np.array(a_list)
         model = (clf_list, a_list)
+        #print(error_list)
         self.save(model, "ada_model.m")
 
 
